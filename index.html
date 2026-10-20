@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>~ 2000s 추억의 감성 다이어리 & 스토리 ~</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: NeoDunggeunmo & Galmuri for Retro Korean Aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Nanum+Gothic+Coding:wght@400;700&family=Single+Day&display=swap" rel="stylesheet">
+    <!-- Tone.js for web audio retro sound generator -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyPink: '#ffb7c5',
+                        cyDarkPink: '#e58e9e',
+                        cyBg: '#f6f3ed',
+                        cyBorder: '#bfaaa2',
+                        cyOrange: '#ffaa64',
+                        cyBlue: '#84b6d4'
+                    },
+                    fontFamily: {
+                        retro: ['"Nanum Gothic Coding"', 'monospace'],
+                        cute: ['"Single Day"', 'cursive'],
+                        hand: ['"Gaegu"', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Retro Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f0e6df;
+            border-left: 1px solid #d4c3b9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4a59a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c28d81;
+        }
+
+        body {
+            background-color: #3b2c35;
+            background-image: radial-gradient(#574350 15%, transparent 16%), radial-gradient(#574350 15%, transparent 16%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            font-family: 'Nanum Gothic Coding', monospace;
+            user-select: none;
+        }
+
+        /* Dot Matrix Pattern background for inner containers */
+        .dot-bg {
+            background-image: radial-gradient(#d3c1b6 1px, transparent 1px);
+            background-size: 8px 8px;
+        }
+
+        /* Classic Retro Button Style */
+        .btn-retro {
+            background: linear-gradient(to bottom, #ffffff 0%, #f0e3db 100%);
+            border: 2px solid #a38c81;
+            border-right-color: #5c4940;
+            border-bottom-color: #5c4940;
+            box-shadow: 1px 1px 0px rgba(0,0,0,0.2);
+            transition: all 0.05s ease;
+        }
+        .btn-retro:active {
+            border: 2px solid #5c4940;
+            border-right-color: #ffffff;
+            border-bottom-color: #ffffff;
+            transform: translate(1px, 1px);
+        }
+
+        /* Typewriter Cursor */
+        .cursor-blink {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background-color: #5c4940;
+            animation: blink 0.8s infinite;
+            margin-left: 2px;
+            vertical-align: middle;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Theme Variations */
+        .theme-pink {
+            --primary: #ffb7c5;
+            --primary-dark: #e58e9e;
+            --accent: #ff859d;
+            --bg-window: #fff9f6;
+        }
+        .theme-lavender {
+            --primary: #dcd0ff;
+            --primary-dark: #b5a4ed;
+            --accent: #a38bf5;
+            --bg-window: #fbf9ff;
+        }
+        .theme-mint {
+            --primary: #bbf2e2;
+            --primary-dark: #8ad3c1;
+            --accent: #52c2a8;
+            --bg-window: #f5fcfb;
+        }
+        .theme-sepia {
+            --primary: #e8d7c3;
+            --primary-dark: #cbb49a;
+            --accent: #a6815e;
+            --bg-window: #fcf8f3;
+        }
+
+        /* CRT Screen Scanline FX (Optional Toggle) */
+        .scanlines {
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.05) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+
+        /* Speech Bubble Arrow */
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 20px;
+            border-width: 6px 10px 6px 0;
+            border-style: solid;
+            border-color: transparent #ffffff transparent transparent;
+        }
+    </style>
+</head>
+<body class="theme-pink min-h-screen flex items-center justify-center p-2 sm:p-4 text-gray-800">
+
+    <!-- CRT Scanline Effect Layer -->
+    <div id="scanlineOverlay" class="fixed inset-0 scanlines z-50 pointer-events-none hidden"></div>
+
+    <!-- MAIN CYWORLD MINI-HOMEPAGE CONTAINER -->
+    <div class="w-full max-w-5xl bg-[#8e786b] p-3 sm:p-5 rounded-2xl shadow-2xl border-4 border-[#524137] relative">
+        
+        <!-- Outer Frame Header / Dot Matrix Border Trim -->
+        <div class="flex justify-between items-center mb-3 text-xs text-[#f5ebd8] px-2 font-bold tracking-wider">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-gem text-pink-300"></i>
+                <span>싸이월드 미니홈피 v2.5 :: [그 시절, 우리의 웹소설 이야기]</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <span>TODAY <strong class="text-yellow-300" id="todayCount">421</strong> | TOTAL <strong class="text-white" id="totalCount">1004</strong></span>
+                <button onclick="toggleScanlines()" class="bg-[#6b584d] hover:bg-[#57463c] px-2 py-0.5 rounded text-[10px] border border-[#a38d7f]">CRT 효과</button>
+            </div>
+        </div>
+
+        <!-- MAIN WINDOW BOX -->
+        <div class="bg-[var(--bg-window)] border-2 border-[#5c4940] rounded-lg p-3 sm:p-4 shadow-inner flex flex-col md:flex-row gap-4 relative min-h-[620px]">
+            
+            <!-- LEFT COLUMN: Profile & BGM & Menu list -->
+            <div class="w-full md:w-64 flex flex-col gap-3 shrink-0">
+                
+                <!-- Today Is... Mini Status Box -->
+                <div class="bg-white border-2 border-[#bfaaa2] p-2 rounded text-center text-xs shadow-sm">
+                    <div class="flex items-center justify-between text-gray-500 mb-1 border-b pb-1">
+                        <span class="font-bold text-[#e58e9e]"><i class="fa-solid fa-heart"></i> TODAY IS...</span>
+                        <span id="currentMoodText" class="font-hand text-base text-gray-700">햎피(happy)</span>
+                    </div>
+                    <p class="text-[11px] text-gray-600 italic py-1" id="profileStatusMsg">"ㅈr는 거 ✕… 생각中 oO"</p>
+                </div>
+
+                <!-- Avatar Profile Box -->
+                <div class="bg-white border-2 border-[#bfaaa2] p-3 rounded flex flex-col items-center justify-center relative overflow-hidden shadow-sm">
+                    <div class="w-32 h-32 bg-pink-100 border-2 border-dashed border-pink-300 rounded-lg flex items-center justify-center relative overflow-hidden my-1">
+                        <!-- User Profile Image -->
+                        <div id="avatarGraphic" class="w-full h-full">
+                            <img src="image_2.png" alt="Zㅣ존건욱 프로필" class="w-full h-full object-contain p-1 rounded cursor-pointer hover:scale-105 transition" onclick="triggerAvatarReact()">
+                        </div>
+                    </div>
+                    
+                    <div class="w-full mt-2 text-center">
+                        <h2 class="font-bold text-sm text-gray-800 flex items-center justify-center gap-1">
+                            Zㅣ존건욱 <i class="fa-solid fa-mars text-blue-400 text-xs"></i>
+                        </h2>
+                        <p class="text-[11px] text-gray-500 mt-0.5">상태: 뜌뜌랑 연애 中 ♡</p>
+                    </div>
+
+                    <!-- Mini BGM Player Widget -->
+                    <div class="w-full mt-3 bg-[#f3ece7] border border-[#d4c3b9] p-2 rounded flex flex-col gap-1">
+                        <div class="flex justify-between items-center text-[10px] text-gray-600">
+                            <span class="font-bold truncate w-28" id="bgmTitle">🎵 프리스타일 - Y</span>
+                            <span id="bgmTime">00:00</span>
+                        </div>
+                        <div class="w-full bg-gray-300 h-1.5 rounded-full overflow-hidden cursor-pointer" onclick="seekBgm(event)">
+                            <div id="bgmProgress" class="bg-[var(--accent)] h-full w-0"></div>
+                        </div>
+                        <div class="flex justify-center gap-2 mt-1">
+                            <button onclick="toggleAudio()" id="playBtn" class="btn-retro text-[10px] px-2 py-0.5 rounded"><i class="fa-solid fa-play"></i> 재생</button>
+                            <button onclick="nextBgm()" class="btn-retro text-[10px] px-2 py-0.5 rounded"><i class="fa-solid fa-forward"></i> 다음곡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Theme Selector Widget -->
+                <div class="bg-white border-2 border-[#bfaaa2] p-2 rounded text-xs">
+                    <span class="font-bold text-gray-600 block mb-1 text-[11px]"><i class="fa-solid fa-palette"></i> 테마 컬러 변경</span>
+                    <div class="grid grid-cols-4 gap-1">
+                        <button onclick="setTheme('pink')" class="h-6 rounded bg-pink-300 border border-pink-400 hover:opacity-80" title="핑크"></button>
+                        <button onclick="setTheme('lavender')" class="h-6 rounded bg-purple-300 border border-purple-400 hover:opacity-80" title="라벤더"></button>
+                        <button onclick="setTheme('mint')" class="h-6 rounded bg-teal-200 border border-teal-300 hover:opacity-80" title="민트"></button>
+                        <button onclick="setTheme('sepia')" class="h-6 rounded bg-amber-200 border border-amber-300 hover:opacity-80" title="세피아"></button>
+                    </div>
+                </div>
+
+                <!-- Daily Fortune Box -->
+                <div class="bg-amber-50 border-2 border-amber-200 p-2.5 rounded text-xs text-amber-900">
+                    <div class="font-bold flex items-center justify-between mb-1">
+                        <span><i class="fa-solid fa-cookie-bite text-amber-500"></i> 오늘의 포춘 쿠키</span>
+                        <button onclick="drawFortune()" class="text-[10px] bg-amber-200 px-1.5 py-0.5 rounded hover:bg-amber-300">뽑기</button>
+                    </div>
+                    <p id="fortuneText" class="text-[11px] text-amber-800 leading-tight">버튼을 눌러 오늘의 운세를 확인해봐!</p>
+                </div>
+
+            </div>
+
+            <div class="flex-1 flex flex-col">
+                
+                <!-- Navigation Tabs -->
+                <div class="flex gap-1 border-b-2 border-[#5c4940] pb-0 px-2 overflow-x-auto">
+                    <button id="tab-story" onclick="switchTab('story')" class="px-4 py-1.5 rounded-t-lg bg-[var(--primary)] font-bold text-xs border-t-2 border-x-2 border-[#5c4940] text-gray-800 -mb-0.5 shadow-sm">
+                        📖 인터랙티브 소설
+                    </button>
+                    <button id="tab-guestbook" onclick="switchTab('guestbook')" class="px-4 py-1.5 rounded-t-lg bg-gray-200 hover:bg-gray-300 font-bold text-xs border-t-2 border-x-2 border-gray-400 text-gray-600 -mb-0.5">
+                        💬 방명록 (<span id="guestCount">2</span>)
+                    </button>
+                    <button id="tab-notes" onclick="switchTab('notes')" class="px-4 py-1.5 rounded-t-lg bg-gray-200 hover:bg-gray-300 font-bold text-xs border-t-2 border-x-2 border-gray-400 text-gray-600 -mb-0.5">
+                        📝 비밀 일기장
+                    </button>
+                </div>
+
+                <!-- TAB CONTENT CONTAINER -->
+                <div class="flex-1 bg-white border-x-2 border-b-2 border-[#5c4940] rounded-b-lg p-3 sm:p-4 flex flex-col justify-between relative overflow-hidden dot-bg min-h-[480px]">
+                    
+                    <!-- 1. STORY TAB PANEL -->
+                    <div id="panel-story" class="flex-1 flex flex-col">
+                        
+                        <!-- Chapter Title Header -->
+                        <div class="flex justify-between items-center border-b pb-2 mb-3">
+                            <span class="text-xs bg-pink-100 text-pink-700 font-bold px-2 py-0.5 rounded border border-pink-300" id="chapterTag">제 1 장</span>
+                            <h3 class="font-bold text-sm sm:text-base text-gray-800 truncate" id="storyTitle">늑대의 유혹? 아니, 야간자율학습의 유혹!</h3>
+                            <button onclick="restartStory()" class="text-xs text-gray-500 hover:text-gray-800 underline"><i class="fa-solid fa-rotate-left"></i> 처음부터</button>
+                        </div>
+
+                        <!-- Dialogue / Visual Scene Window -->
+                        <div class="bg-slate-50 border-2 border-gray-300 rounded-lg p-3 mb-3 h-36 sm:h-44 flex items-center justify-center relative overflow-hidden shadow-inner">
+                            <div id="sceneVisual" class="w-full h-full flex items-center justify-around">
+                                <!-- Character Sprites / Visual representation injected via JS -->
+                            </div>
+                        </div>
+
+                        <!-- Story Text Box -->
+                        <div class="bg-amber-50/80 border-2 border-amber-200 rounded-lg p-3 sm:p-4 mb-3 flex-1 overflow-y-auto relative min-h-[120px]">
+                            <div id="speakerName" class="font-bold text-xs text-amber-800 mb-1 hidden"></div>
+                            <p id="storyText" class="text-xs sm:text-sm text-gray-800 leading-relaxed font-retro"></p>
+                            <span id="typingCursor" class="cursor-blink"></span>
+                        </div>
+
+                        <!-- Choices & Action Container -->
+                        <div id="choicesContainer" class="flex flex-col gap-2 mt-auto">
+                            <!-- Choice buttons generated here -->
+                        </div>
+
+                    </div>
+
+                    <!-- 2. GUESTBOOK TAB PANEL -->
+                    <div id="panel-guestbook" class="flex-1 flex-col hidden">
+                        <div class="text-xs font-bold text-gray-700 mb-2 flex justify-between items-center">
+                            <span>💬 친구들의 방명록 목록</span>
+                            <span class="text-[10px] text-gray-500">일촌평을 남겨주세요!</span>
+                        </div>
+
+                        <!-- Guestbook Form -->
+                        <div class="bg-pink-50 border border-pink-200 p-2.5 rounded-lg mb-3 flex flex-col gap-2">
+                            <div class="flex gap-2">
+                                <input type="text" id="guestName" placeholder="일촌 닉네임" class="text-xs p-1.5 border rounded w-1/3 focus:outline-none focus:ring-1 focus:ring-pink-400">
+                                <input type="text" id="guestMsg" placeholder="상큼한 일촌평 한마디! (예: 퍼가요~♡)" class="text-xs p-1.5 border rounded w-2/3 focus:outline-none focus:ring-1 focus:ring-pink-400" onkeypress="if(event.key==='Enter') addGuestbookEntry()">
+                            </div>
+                            <button onclick="addGuestbookEntry()" class="btn-retro text-xs py-1 rounded font-bold text-gray-700 bg-white">확인 (등록)</button>
+                        </div>
+
+                        <!-- Guestbook Entries List -->
+                        <div id="guestbookList" class="flex-1 overflow-y-auto max-h-[300px] flex flex-col gap-2 pr-1">
+                            <!-- Items injected via JS -->
+                        </div>
+                    </div>
+
+                    <!-- 3. MEMORY NOTES TAB PANEL -->
+                    <div id="panel-notes" class="flex-1 flex-col hidden">
+                        <div class="text-xs font-bold text-gray-700 mb-2 flex justify-between items-center">
+                            <span>📝 나만의 다이어리 & 스티커 메모장</span>
+                            <span class="text-[10px] text-gray-500">자동 저장됩니다</span>
+                        </div>
+
+                        <div class="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-3 flex-1 flex flex-col shadow-inner">
+                            <div class="flex gap-2 mb-2">
+                                <button onclick="addSticker('❤️')" class="text-base hover:scale-125 transition">❤️</button>
+                                <button onclick="addSticker('⭐')" class="text-base hover:scale-125 transition">⭐</button>
+                                <button onclick="addSticker('🍀')" class="text-base hover:scale-125 transition">🍀</button>
+                                <button onclick="addSticker('🎀')" class="text-base hover:scale-125 transition">🎀</button>
+                                <button onclick="addSticker('🐾')" class="text-base hover:scale-125 transition">🐾</button>
+                                <span class="text-gray-300">|</span>
+                                <span class="text-xs text-gray-500 self-center">오늘의 감성 기록</span>
+                            </div>
+                            <textarea id="noteContent" class="w-full flex-1 bg-transparent border-none resize-none focus:outline-none font-hand text-base text-gray-800 leading-relaxed" placeholder="여기에 추억이나 떠오르는 생각을 적어보세요..."></textarea>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer Status Bar -->
+                <div class="mt-2 text-[10px] text-gray-500 flex justify-between items-center px-1">
+                    <span>CYWORLD INTERACTIVE NOVEL SYSTEM v2.5</span>
+                    <span>Designed for Retro Korean Aesthetic Enthusiasts</span>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        /* ------------------------------------------------------------------
+         * 1. STORY DATA (User Story Progression)
+         * ------------------------------------------------------------------ */
+        const storyData = {
+            start: {
+                chapter: "제 1 장",
+                title: "굿나잇 라디오 당첨!!",
+                text: "지난 몇 달 동안 김중열의 굿나잇 라디오에 쓴 편지가 몇 통인지 셀 수가 없다ㅠ 근데 마지막이다 하고 보낸 사연이 딱 됐다!! 너무 행복해서 침대 위에서 펄쩍펄쩍 뛰었다. 기다린 보람이 있었다. 잠이 확 깨서 그냥 안 자고 미니홈피나 꾸며야지~*^^*",
+                speaker: "나 (건욱)",
+                visual: `
+                    <div class="text-center">
+                        <div class="text-5xl mb-2 animate-bounce">📻</div>
+                        <div class="text-xs bg-pink-100 text-pink-800 px-2 py-0.5 rounded-full font-bold">김중열의 굿나잇 라디오 사연 당첨!</div>
+                    </div>
+                `,
+                choices: [
+                    { text: "제 2장: 형이랑 친해지기 이야기 보기", next: "chapter2" }
+                ]
+            },
+            chapter2: {
+                chapter: "제 2 장",
+                title: "형이랑 친해지기",
+                text: "운 좋게 형이랑 친해졌다 ㅎㅎ!! 아 너무 귀엽다ㅠ 아기 고양이 같아! 캡짱 좋음!! 추영대가 괴롭히긴 해도 매튜 형 생각만 하면 에너지 뿜뿜. 근데 매튜 형이 담배 핀다고 오해한 것 같타ㅠ 하지만 바로 해명함!",
+                speaker: "나 (건욱)",
+                visual: `
+                    <div class="text-center">
+                        <div class="text-5xl mb-2">🐱✨</div>
+                        <div class="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold">아기 고양이 같은 매튜 형</div>
+                    </div>
+                `,
+                choices: [
+                    { text: "제 3장: 형이랑 나랑.. 이야기 보기", next: "chapter3" }
+                ]
+            },
+            chapter3: {
+                chapter: "제 3 장",
+                title: "형이랑 나랑..",
+                text: "추영대 투투 준비하다가 매튜 형이랑 싸우는 거 목격하고 바로 추영대 까버림! 개쫄렸는데 형 앞이라 파워레인저 됨! 그리고 형이랑 우리 집 갔는데 미니홈피 꾸미는 것도 알려주고! 근데 너무 가까워서 심장 터질 뻔.. 다행이야..",
+                speaker: "나 (건욱)",
+                visual: `
+                    <div class="text-center">
+                        <div class="text-5xl mb-2">⚡💥</div>
+                        <div class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded-full font-bold">형 앞이라 파워레인저 변신!</div>
+                    </div>
+                `,
+                choices: [
+                    { text: "제 4장: 조폭 마누라 됨! 이야기 보기", next: "chapter4" }
+                ]
+            },
+            chapter4: {
+                chapter: "제 4 장",
+                title: "조폭 마누라 됨!",
+                text: "우와 매튜 형이 추영대 깐 사람이래.. 그래서 한동안 피해 다녔는데 이젠 그 짓 못 하겠음ㅠ 진짜 사귈 거야. 연애할 거야!! 이제 투투임! 아직도 실감이 잘 안 나는데 형이랑 사귄다니 너무 좋다 ㅎㅎㅎ 뜌뜌랑 평생 행복할 거야!!!",
+                speaker: "나 (건욱)",
+                visual: `
+                    <div class="text-center">
+                        <div class="text-5xl mb-2 animate-pulse">🥰❤️</div>
+                        <div class="text-xs bg-pink-200 text-pink-900 px-2 py-0.5 rounded-full font-bold">뜌뜌♥건욱 커플 탄생!</div>
+                    </div>
+                `,
+                choices: [
+                    { text: "처음부터 다시 읽기", next: "start" }
+                ]
+            }
+        };
+
+        /* ------------------------------------------------------------------
+         * 2. STATE MANAGEMENT & AUDIO SETUP
+         * ------------------------------------------------------------------ */
+        let currentState = 'start';
+        let isTyping = false;
+        let bgmPlaying = false;
+        let bgmInterval = null;
+        let bgmSeconds = 0;
+        let synth = null;
+
+        // Initialize Audio Synthesizer (Tone.js wrapper)
+        function initAudio() {
+            if (!synth && window.Tone) {
+                synth = new Tone.PolySynth(Tone.Synth).toDestination();
+                synth.volume.value = -12;
+            }
+        }
+
+        function playClickSound() {
+            try {
+                initAudio();
+                if (synth) {
+                    synth.triggerAttackRelease("C6", "16n");
+                }
+            } catch(e) {}
+        }
+
+        function playDialogueSound() {
+            try {
+                initAudio();
+                if (synth) {
+                    synth.triggerAttackRelease("E5", "32n");
+                }
+            } catch(e) {}
+        }
+
+        /* BGM Simulator Sound Generator using Tone.js */
+        const bgmPlaylist = [
+            { title: "🎵 프리스타일 - Y", notes: ["F4", "A4", "C5", "E5", "D5", "C5", "A4"] },
+            { title: "🎵 윤도현 - 사랑했나봐", notes: ["G4", "B4", "D5", "G5", "F#5", "D5"] },
+            { title: "🎵 에픽하이 - Fly", notes: ["C4", "E4", "G4", "B4", "A4", "G4"] }
+        ];
+        let currentBgmIdx = 0;
+        let bgmNoteIdx = 0;
+        let bgmLoop = null;
+
+        function toggleAudio() {
+            initAudio();
+            Tone.start();
+
+            const playBtn = document.getElementById('playBtn');
+            if (bgmPlaying) {
+                bgmPlaying = false;
+                playBtn.innerHTML = '<i class="fa-solid fa-play"></i> 재생';
+                if (bgmLoop) clearInterval(bgmLoop);
+            } else {
+                bgmPlaying = true;
+                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i> 일시정지';
+                
+                // Play simple synth BGM sequence
+                bgmLoop = setInterval(() => {
+                    if (!bgmPlaying) return;
+                    const track = bgmPlaylist[currentBgmIdx];
+                    const note = track.notes[bgmNoteIdx % track.notes.length];
+                    if (synth) synth.triggerAttackRelease(note, "8n");
+                    bgmNoteIdx++;
+                    
+                    bgmSeconds++;
+                    updateBgmProgress();
+                }, 400);
+            }
+        }
+
+        function nextBgm() {
+            currentBgmIdx = (currentBgmIdx + 1) % bgmPlaylist.length;
+            document.getElementById('bgmTitle').innerText = bgmPlaylist[currentBgmIdx].title;
+            bgmSeconds = 0;
+            bgmNoteIdx = 0;
+            updateBgmProgress();
+            playClickSound();
+        }
+
+        function updateBgmProgress() {
+            const mins = Math.floor(bgmSeconds / 60).toString().padStart(2, '0');
+            const secs = (bgmSeconds % 60).toString().padStart(2, '0');
+            document.getElementById('bgmTime').innerText = `${mins}:${secs}`;
+            const pct = (bgmSeconds % 100);
+            document.getElementById('bgmProgress').style.width = `${pct}%`;
+        }
+
+        function seekBgm(e) {
+            bgmSeconds = Math.floor(Math.random() * 60);
+            updateBgmProgress();
+            playClickSound();
+        }
+
+        /* ------------------------------------------------------------------
+         * 3. STORY RENDER ENGINE (Typewriter Effect & Choices)
+         * ------------------------------------------------------------------ */
+        function renderStory(nodeKey) {
+            currentState = nodeKey;
+            const data = storyData[nodeKey];
+            if (!data) return;
+
+            // Update Headers
+            document.getElementById('chapterTag').innerText = data.chapter;
+            document.getElementById('storyTitle').innerText = data.title;
+            document.getElementById('sceneVisual').innerHTML = data.visual;
+
+            const speakerElem = document.getElementById('speakerName');
+            if (data.speaker) {
+                speakerElem.innerText = `[${data.speaker}]`;
+                speakerElem.classList.remove('hidden');
+            } else {
+                speakerElem.classList.add('hidden');
+            }
+
+            // Typewriter effect logic
+            const textElem = document.getElementById('storyText');
+            const choicesContainer = document.getElementById('choicesContainer');
+            choicesContainer.innerHTML = ''; // Hide choices until text finishes
+            textElem.innerText = '';
+            
+            let charIndex = 0;
+            isTyping = true;
+            document.getElementById('typingCursor').style.display = 'inline-block';
+
+            const typeInterval = setInterval(() => {
+                if (charIndex < data.text.length) {
+                    textElem.innerText += data.text.charAt(charIndex);
+                    charIndex++;
+                    if (charIndex % 3 === 0) playDialogueSound();
+                } else {
+                    clearInterval(typeInterval);
+                    isTyping = false;
+                    document.getElementById('typingCursor').style.display = 'none';
+                    renderChoices(data.choices);
+                }
+            }, 30);
+        }
+
+        function renderChoices(choices) {
+            const choicesContainer = document.getElementById('choicesContainer');
+            choicesContainer.innerHTML = '';
+
+            choices.forEach((choice, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-retro w-full text-left p-2 sm:p-2.5 rounded text-xs sm:text-sm font-bold text-gray-800 hover:bg-pink-100 flex items-center justify-between transition group';
+                btn.innerHTML = `
+                    <span><i class="fa-solid fa-angle-right text-pink-400 group-hover:translate-x-1 transition-transform"></i> ${choice.text}</span>
+                    <span class="text-[10px] text-gray-400">선택</span>
+                `;
+                btn.onclick = () => {
+                    playClickSound();
+                    renderStory(choice.next);
+                };
+                choicesContainer.appendChild(btn);
+            });
+        }
+
+        function restartStory() {
+            playClickSound();
+            renderStory('start');
+        }
+
+        /* ------------------------------------------------------------------
+         * 4. TAB SWITCHING SYSTEM
+         * ------------------------------------------------------------------ */
+        function switchTab(tabName) {
+            playClickSound();
+            const tabs = ['story', 'guestbook', 'notes'];
+            tabs.forEach(t => {
+                const tabBtn = document.getElementById(`tab-${t}`);
+                const panel = document.getElementById(`panel-${t}`);
+                if (t === tabName) {
+                    tabBtn.className = 'px-4 py-1.5 rounded-t-lg bg-[var(--primary)] font-bold text-xs border-t-2 border-x-2 border-[#5c4940] text-gray-800 -mb-0.5 shadow-sm';
+                    panel.classList.remove('hidden');
+                    panel.classList.add('flex');
+                } else {
+                    tabBtn.className = 'px-4 py-1.5 rounded-t-lg bg-gray-200 hover:bg-gray-300 font-bold text-xs border-t-2 border-x-2 border-gray-400 text-gray-600 -mb-0.5';
+                    panel.classList.add('hidden');
+                    panel.classList.remove('flex');
+                }
+            });
+        }
+
+        /* ------------------------------------------------------------------
+         * 5. GUESTBOOK FEATURE
+         * ------------------------------------------------------------------ */
+        let guestbookData = [
+            { name: "매튜♡", msg: "건욱아 미니홈피 예쁘네 ㅎ 앞으로도 자주 놀러올게!", time: "2005.05.14 01:15" },
+            { name: "익명일촌", msg: "건욱이랑 매튜랑 잘어울린다!! 부러워~♡", time: "2005.05.13 22:40" },
+            { name: "도토리부자", msg: "퍼가요~♡ 축하해!", time: "2005.05.12 14:20" }
+        ];
+
+        function renderGuestbook() {
+            const list = document.getElementById('guestbookList');
+            list.innerHTML = '';
+            guestbookData.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = 'bg-white border border-gray-300 p-2 rounded shadow-sm text-xs flex flex-col gap-1';
+                card.innerHTML = `
+                    <div class="flex justify-between items-center text-gray-500 border-b pb-1">
+                        <span class="font-bold text-pink-600"><i class="fa-solid fa-user-astronaut"></i> ${escapeHtml(item.name)}</span>
+                        <span class="text-[10px]">${item.time}</span>
+                    </div>
+                    <p class="text-gray-800 my-0.5">${escapeHtml(item.msg)}</p>
+                `;
+                list.appendChild(card);
+            });
+            document.getElementById('guestCount').innerText = guestbookData.length;
+        }
+
+        function addGuestbookEntry() {
+            const nameInput = document.getElementById('guestName');
+            const msgInput = document.getElementById('guestMsg');
+
+            if (!nameInput.value.trim() || !msgInput.value.trim()) {
+                alert('닉네임과 일촌평 내용을 입력해주세요!');
+                return;
+            }
+
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}.${(now.getMonth()+1).toString().padStart(2,'0')}.${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+
+            guestbookData.unshift({
+                name: nameInput.value.trim(),
+                msg: msgInput.value.trim(),
+                time: dateStr
+            });
+
+            msgInput.value = '';
+            renderGuestbook();
+            playClickSound();
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        /* ------------------------------------------------------------------
+         * 6. DIARY & STICKER FEATURE
+         * ------------------------------------------------------------------ */
+        function addSticker(emoji) {
+            const textarea = document.getElementById('noteContent');
+            textarea.value += ` ${emoji} `;
+            playClickSound();
+            saveNoteLocally();
+        }
+
+        function saveNoteLocally() {
+            const content = document.getElementById('noteContent').value;
+            localStorage.setItem('cyworld_diary_note', content);
+        }
+
+        function loadNoteLocally() {
+            const saved = localStorage.getItem('cyworld_diary_note');
+            if (saved) {
+                document.getElementById('noteContent').value = saved;
+            } else {
+                document.getElementById('noteContent').value = "뜌뜌랑 사귀게 해주셔서 감사합니다ㅠ 누구든 절 받으세요.. 뜌뜌한테 안 맞으려면 내가 밥 하고 설거지하고 빨래하고 다 해야지 지금 내 옆에서 자고있는데 진짜 너무 귀여워서 물어버릴거야!><";
+            }
+        }
+
+        document.getElementById('noteContent').addEventListener('input', saveNoteLocally);
+
+        /* ------------------------------------------------------------------
+         * 7. THEMES & EXTRAS (Fortune, CRT, Mood)
+         * ------------------------------------------------------------------ */
+        function setTheme(themeName) {
+            document.body.className = `theme-${themeName} min-h-screen flex items-center justify-center p-2 sm:p-4 text-gray-800`;
+            playClickSound();
+        }
+
+        function toggleScanlines() {
+            const overlay = document.getElementById('scanlineOverlay');
+            overlay.classList.toggle('hidden');
+            playClickSound();
+        }
+
+        const fortunes = [
+            "오늘 생각지도 못한 곳에서 행운의 일촌을 만나게 됩니다! 🍀",
+            "비 오는 날의 로맨스가 기다리고 있습니다. 우산을 챙기세요! ☔",
+            "버디버디 쪽지로 반가운 소식이 찾아옵니다! 💌",
+            "도토리 10개가 생길 만큼 운수 좋은 날입니다! 🌰",
+            "오늘의 추천 BGM을 들으면 마음이 편안해집니다. 🎵"
+        ];
+
+        function drawFortune() {
+            playClickSound();
+            const randomIndex = Math.floor(Math.random() * fortunes.length);
+            const fortuneText = document.getElementById('fortuneText');
+            fortuneText.innerText = fortunes[randomIndex];
+        }
+
+        function triggerAvatarReact() {
+            playClickSound();
+            const moods = ["설렘반 걱정반 ♬", "우울함.. (눈물)", "행복 만땅! ♥", "센치한 밤..."];
+            const current = document.getElementById('currentMoodText');
+            const randomMood = moods[Math.floor(Math.random() * moods.length)];
+            current.innerText = randomMood;
+        }
+
+        /* ------------------------------------------------------------------
+         * 8. INITIALIZATION ON WINDOW LOAD
+         * ------------------------------------------------------------------ */
+        window.onload = function() {
+            renderStory('start');
+            renderGuestbook();
+            loadNoteLocally();
+
+            // Simulate slight random view counters
+            document.getElementById('todayCount').innerText = Math.floor(Math.random() * 100) + 350;
+            document.getElementById('totalCount').innerText = Math.floor(Math.random() * 500) + 1200;
+        };
+    </script>
+</body>
+</html>
